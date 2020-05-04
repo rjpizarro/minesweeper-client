@@ -1,0 +1,44 @@
+.board {
+  border: 10px solid #d6d6d6;
+  border-left-color: #8c8c8c;
+  border-top-color: #8c8c8c;
+  width: max-content;
+  margin: 0 auto;
+
+  &__row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__column {
+    background: #e2e2e2;
+    border: 3px solid #FFF;
+    border-right-color: #adadad;
+    border-bottom-color: #adadad;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 25px;
+    width: 25px;
+
+    &--selected {
+      border: 1px solid #8e8e8e;
+      background: #c5c5c5;
+    }
+
+    &:hover {
+      background: #c5c5c5;
+    }
+
+    &:active {
+      background: #b4b4b4;
+    }
+  }
+
+  &__value {
+    font-size: 25px;
+    font-weight: bold;
+  }
+}
