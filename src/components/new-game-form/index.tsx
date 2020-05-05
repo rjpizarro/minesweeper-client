@@ -35,9 +35,9 @@ const validationSchema = object().shape({
 })
 
 const initialValues = {
-    rows: '',
-    columns: '',
-    mines: '',
+    rows: 9,
+    columns: 9,
+    mines: 10,
 }
 
 const NewGameForm = (props: NewGameFormProps) => {

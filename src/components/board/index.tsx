@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-import { get } from 'lodash'
+import get from 'lodash/get'
 import './style.scss'
 
 interface BoardProps {
