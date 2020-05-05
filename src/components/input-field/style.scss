@@ -1,0 +1,26 @@
+.input-field {
+  margin: 15px 0;
+
+  &__container {
+    display: flex;
+  }
+
+  &__label {
+    text-align: left;
+    margin: 0;
+    color: #8c8c8c;
+    flex: 1;
+    padding-right: 15px;
+  }
+
+  &__input {
+    border: 0;
+    border-bottom: 1px solid #8c8c8c;
+  }
+
+  &__error {
+    color: #ff4a46;
+    font-weight: bold;
+    font-size: 12px;
+  }
+}

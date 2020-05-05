@@ -1,0 +1,9 @@
+.new-game-form {
+  width: min-content;
+  margin: 0 auto;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+  }
+}
