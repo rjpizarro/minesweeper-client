@@ -28,6 +28,14 @@
       background: #c5c5c5;
     }
 
+    &--mine-exploited {
+      background: #F00;
+    }
+
+    &--board-blocked:hover {
+      cursor: not-allowed;
+    }
+
     &:hover {
       background: #c5c5c5;
     }

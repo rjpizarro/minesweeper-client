@@ -30,7 +30,7 @@ const validationSchema = object().shape({
         .positive()
         .integer()
         .required()
-        .min(2)
+        .min(1)
         .typeError('value must be a number'),
 })
 

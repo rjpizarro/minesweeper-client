@@ -13,7 +13,7 @@ import endpoints from '../../config/endpoints'
 
 const NewGameContainer = () => {
     const [gameState, setGameState] = useGameContext()
-    const {isLoading, makeRequest: postGame } = useMakeRequest(
+    const { makeRequest: postGame } = useMakeRequest(
         endpoints.games.post,
         'post',
         { lazy: true }
