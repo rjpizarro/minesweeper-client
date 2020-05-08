@@ -10,10 +10,11 @@ import NewGameForm from '../../components/new-game-form'
 import useMakeRequest from '../../libs/make-request'
 import { useGameContext } from '../../libs/game-store'
 import endpoints from '../../config/endpoints'
+import Spinner from '../../components/spinner'
 
 const NewGameContainer = () => {
     const [gameState, setGameState] = useGameContext()
-    const { makeRequest: postGame } = useMakeRequest(
+    const { isLoading, makeRequest: postGame } = useMakeRequest(
         endpoints.games.post,
         'post',
         { lazy: true }
@@ -34,7 +35,9 @@ const NewGameContainer = () => {
     }
 
     return (
-        <NewGameForm onSubmit={handleNewGameSubmit} />
+        <Spinner isLoading={isLoading} >
+            <NewGameForm onSubmit={handleNewGameSubmit} />
+        </Spinner>
     )
 }
 

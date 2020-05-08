@@ -13,6 +13,7 @@ import useMakeRequest from '../../libs/make-request'
 import endpoints from '../../config/endpoints'
 import { BoardValuesEnum } from '../../enums'
 import Button from '../../components/button'
+import Spinner from '../../components/spinner'
 
 const GameContainer = () => {
     const { id } = useParams()
@@ -22,12 +23,12 @@ const GameContainer = () => {
     const [matrix, setMatrix] = useState(baseMatrix)
     const [gameOver, setGameOver] = useState(false)
     const [gameResult, setGameResult] = useState('')
-    const { makeRequest: getGameById } = useMakeRequest(
+    const { isLoading: gameIsLoading, makeRequest: getGameById } = useMakeRequest(
         `${endpoints.games.get}/${id}`,
         'get',
         { lazy: true }
         )
-    const {makeRequest: postMove } = useMakeRequest(
+    const {isLoading: postMoveIsLoading, makeRequest: postMove } = useMakeRequest(
         endpoints.moves.post,
         'post',
         { lazy: true }
@@ -73,17 +74,23 @@ const GameContainer = () => {
         setMatrix(nextBoard)
     }
 
+    const isLoading = gameIsLoading || postMoveIsLoading
+
     return (
         <div>
-            <Board
-                boardBlocked={gameOver}
-                matrix={matrix}
-                onLeftClick={(row, col) => handleClick(row, col, 'left')}
-                onRightClick={(row, col, value) => handleClick(row, col, 'right', value)}
-            />
-            { gameOver && <h2>Game Over</h2> }
-            { gameResult && <p> {gameResult} </p> }
-            { gameOver && <Button label="Play Again!" onClick={() => history.push('/new-game')} /> }
+            <div>
+                <Spinner isLoading={isLoading} >
+                    <Board
+                        boardBlocked={gameOver}
+                        matrix={matrix}
+                        onLeftClick={(row, col) => handleClick(row, col, 'left')}
+                        onRightClick={(row, col, value) => handleClick(row, col, 'right', value)}
+                    />
+                </Spinner>
+                { gameOver && <h2>Game Over</h2> }
+                { gameResult && <p> {gameResult} </p> }
+                { gameOver && <Button label="Play Again!" onClick={() => history.push('/new-game')} /> }
+            </div>
         </div>
     )
 }
