@@ -2,6 +2,7 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 import { Switch, Route, useHistory } from 'react-router-dom'
+import { FaBomb } from 'react-icons/fa'
 
 // COMPONENTS
 import Button from './components/button'
@@ -15,6 +16,7 @@ import AppHeader from './components/app-header'
 // LIBS
 import { useAuthContext } from './libs/auth-store'
 import { getJWT, getUsername } from './libs/AuthPersistLocalStorage'
+import AppContainer from './components/app-container'
 
 const App = () => {
     const history = useHistory()
@@ -66,22 +68,25 @@ const App = () => {
             />
             {
                 appReady
-                    ? <div>
+                    ? <AppContainer>
                         <Switch>
                             <Route path="/game" component={GameContainer} />
                             <Route path="/auth" component={AuthContainer} />
                             <Route path="/">
+                                <div>
+                                    <FaBomb size={250} />
+                                </div>
                                 <Button
                                     label="New game"
                                     onClick={() => {
                                         history.push('/game/new')
                                     }}
                                 />
-                                <hr />
+                                <hr style={{width: '85%' }}  />
                                 { token && <UserGamesContainer />}
                             </Route>
                         </Switch>
-                    </div>
+                    </AppContainer>
                     : null
             }
 
