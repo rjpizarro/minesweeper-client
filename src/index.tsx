@@ -3,15 +3,18 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker';
 import { GameProvider } from './libs/game-store'
+import { AuthProvider } from './libs/auth-store'
 import App from './App';
 import './index.css';
 
 ReactDOM.render(
     <React.StrictMode>
         <Router>
-            <GameProvider>
-                <App />
-            </GameProvider>
+            <AuthProvider>
+                <GameProvider>
+                    <App />
+                </GameProvider>
+            </AuthProvider>
         </Router>
     </React.StrictMode>,
   document.getElementById('root')

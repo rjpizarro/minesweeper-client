@@ -14,25 +14,28 @@ import endpoints from '../../config/endpoints'
 import { BoardValuesEnum } from '../../enums'
 import Button from '../../components/button'
 import Spinner from '../../components/spinner'
+import {useAuthContext} from '../../libs/auth-store'
 
 const GameContainer = () => {
     const { id } = useParams()
     const history = useHistory()
-    const [gameState, setGameState] = useGameContext()
+    const [ gameState, setGameState ] = useGameContext()
+    const [ authState ] = useAuthContext()
     const baseMatrix = get(gameState, 'game.maskedBoard', [])
-    const [matrix, setMatrix] = useState(baseMatrix)
-    const [gameOver, setGameOver] = useState(false)
-    const [gameResult, setGameResult] = useState('')
+    const [ matrix, setMatrix ] = useState(baseMatrix)
+    const [ gameOver, setGameOver ] = useState(false)
+    const [ gameResult, setGameResult ] = useState('')
     const { isLoading: gameIsLoading, makeRequest: getGameById } = useMakeRequest(
         `${endpoints.games.get}/${id}`,
         'get',
-        { lazy: true }
+        { lazy: true, jwt: authState.token }
         )
     const {isLoading: postMoveIsLoading, makeRequest: postMove } = useMakeRequest(
         endpoints.moves.post,
         'post',
-        { lazy: true }
+        { lazy: true, jwt: authState.token }
     )
+
     useEffect(() => {
         // @ts-ignore
         if (isEmpty(gameState.game)) {
@@ -50,6 +53,7 @@ const GameContainer = () => {
                 }
             })
         }
+        // eslint-disable-next-line
     }, [])
 
     const handleClick = (row: number, col: number, clickType: 'left' | 'right', value?: BoardValuesEnum | null) => {

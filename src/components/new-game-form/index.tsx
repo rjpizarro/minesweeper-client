@@ -43,6 +43,7 @@ const initialValues = {
 const NewGameForm = (props: NewGameFormProps) => {
     return (
         <div className='new-game-form'>
+            <h2>Create new game</h2>
             <Formik validationSchema={validationSchema} onSubmit={props.onSubmit} initialValues={initialValues}>
                 {({ handleSubmit }) => (
                     <Form>

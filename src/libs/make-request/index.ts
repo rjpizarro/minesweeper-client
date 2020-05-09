@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react'
 
 interface MakeRequestOptionsType {
     body?: any,
-    headers?: Headers,
+    headers?: any,
     silent?: boolean
     lazy?: boolean
+    jwt?: string
 }
 
 type FetcherOptions = {
@@ -20,9 +21,18 @@ const useMakeRequest = (endpoint: string, method: string, options?: MakeRequestO
     const [isLoading, setIsLoading] = useState(false)
 
     const body = get(options, 'body', null)
-    const headers = get(options, 'headers', {})
+    let headers = get(options, 'headers', {})
     const silent = get(options, 'silent', false)
     const lazy = get(options, 'lazy', null)
+    const jwt = get(options, 'jwt', null)
+
+    console.log(">>jwt", jwt)
+    if (jwt) {
+        headers = Object.assign(
+            { authorization: `bearer ${jwt}` },
+                headers
+            )
+    }
 
     const fetcher = (variables?: any, options?: FetcherOptions) => {
         const bodyRequest = variables || body
@@ -48,7 +58,7 @@ const useMakeRequest = (endpoint: string, method: string, options?: MakeRequestO
         .then(responseJson => {
             setIsLoading(false)
 
-            if (get(responseJson, 'code') === 400) {
+            if (get(responseJson, 'code') === 400 ||  get(responseJson, 'code') === 401) {
                 if (onError) {
                     onError(responseJson)
                 }
@@ -70,6 +80,7 @@ const useMakeRequest = (endpoint: string, method: string, options?: MakeRequestO
         if (!lazy) {
             fetcher()
         }
+        // eslint-disable-next-line
     }, [])
 
     return {

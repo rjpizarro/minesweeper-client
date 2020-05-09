@@ -11,13 +11,15 @@ import useMakeRequest from '../../libs/make-request'
 import { useGameContext } from '../../libs/game-store'
 import endpoints from '../../config/endpoints'
 import Spinner from '../../components/spinner'
+import {useAuthContext} from '../../libs/auth-store'
 
 const NewGameContainer = () => {
-    const [gameState, setGameState] = useGameContext()
+    const [ authState ] = useAuthContext()
+    const [, setGameState ] = useGameContext()
     const { isLoading, makeRequest: postGame } = useMakeRequest(
         endpoints.games.post,
         'post',
-        { lazy: true }
+        { lazy: true, jwt: authState.token }
     )
     const history = useHistory()
 
