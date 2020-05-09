@@ -26,7 +26,6 @@ const useMakeRequest = (endpoint: string, method: string, options?: MakeRequestO
     const lazy = get(options, 'lazy', null)
     const jwt = get(options, 'jwt', null)
 
-    console.log(">>jwt", jwt)
     if (jwt) {
         headers = Object.assign(
             { authorization: `bearer ${jwt}` },

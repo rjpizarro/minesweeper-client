@@ -12,6 +12,7 @@
     "@types/react-dom": "^16.9.7",
     "catchify": "^2.6.1",
     "classnames": "^2.2.6",
+    "date-fns": "^2.13.0",
     "dot-prop-immutable": "^2.1.0",
     "formik": "^2.1.4",
     "http-methods-enum": "^0.1.1",

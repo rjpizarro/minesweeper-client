@@ -8,8 +8,7 @@ import Button from './components/button'
 import Avatar from './components/avatar'
 
 // CONTAINERS
-import NewGameContainer from './containers/new-game'
-import GameContainer from './containers/game'
+import GameContainer, { UserGamesContainer } from './containers/game'
 import AuthContainer from './containers/auth'
 import AppHeader from './components/app-header'
 
@@ -69,16 +68,17 @@ const App = () => {
                 appReady
                     ? <div>
                         <Switch>
-                            <Route path="/new-game" component={NewGameContainer} />
-                            <Route path="/game/:id" component={GameContainer} />
+                            <Route path="/game" component={GameContainer} />
                             <Route path="/auth" component={AuthContainer} />
                             <Route path="/">
                                 <Button
                                     label="New game"
                                     onClick={() => {
-                                        history.push('/new-game')
+                                        history.push('/game/new')
                                     }}
                                 />
+                                <hr />
+                                { token && <UserGamesContainer />}
                             </Route>
                         </Switch>
                     </div>

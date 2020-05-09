@@ -1,0 +1,9 @@
+.game-card-gallery {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  &__card {
+    margin: 15px;
+  }
+}

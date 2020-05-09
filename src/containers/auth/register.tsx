@@ -35,7 +35,7 @@ const Register = () => {
                     token: user.token
                 })
 
-                history.replace('/new-game')
+                history.replace('/game/new')
             }}
         )
     }
