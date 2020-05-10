@@ -18,9 +18,8 @@ const GameCardGallery = (props: GameCardGalleryProps) => {
     return (
         <div className='game-card-gallery'>
             { map(data, (game: any) => (
-                <div className='game-card-gallery__card'>
+                <div className='game-card-gallery__card' key={game._id}>
                     <GameCard
-                        key={game._id}
                         id={game._id}
                         gameOver={Boolean(game.finishedAt)}
                         createdAt={game.createdAt}

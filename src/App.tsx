@@ -17,6 +17,7 @@ import AppHeader from './components/app-header'
 import { useAuthContext } from './libs/auth-store'
 import { getJWT, getUsername } from './libs/AuthPersistLocalStorage'
 import AppContainer from './components/app-container'
+import Footer from './components/footer'
 
 const App = () => {
     const history = useHistory()
@@ -82,14 +83,14 @@ const App = () => {
                                         history.push('/game/new')
                                     }}
                                 />
-                                <hr style={{width: '85%' }}  />
+                                { token && <hr style={{width: '85%' }}  />}
                                 { token && <UserGamesContainer />}
                             </Route>
                         </Switch>
                     </AppContainer>
                     : null
             }
-
+            <Footer />
         </div>
     );
 }

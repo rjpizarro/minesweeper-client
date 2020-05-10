@@ -7,3 +7,9 @@
     margin: 15px;
   }
 }
+
+@media (max-width: 640px) {
+  .game-card-gallery {
+    flex-direction: column;
+  }
+}

@@ -53,6 +53,9 @@ const PlayGameContainer = () => {
                 }
             })
         }
+
+        // @ts-ignore
+        return () => setGameState({})
         // eslint-disable-next-line
     }, [])
 
