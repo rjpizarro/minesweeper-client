@@ -5,8 +5,10 @@ import { Switch, Route, useHistory } from 'react-router-dom'
 import { FaBomb } from 'react-icons/fa'
 
 // COMPONENTS
-import Button from './components/button'
+import AppContainer from './components/app-container'
 import Avatar from './components/avatar'
+import Button from './components/button'
+import Footer from './components/footer'
 
 // CONTAINERS
 import GameContainer, { UserGamesContainer } from './containers/game'
@@ -15,9 +17,8 @@ import AppHeader from './components/app-header'
 
 // LIBS
 import { useAuthContext } from './libs/auth-store'
-import { getJWT, getUsername } from './libs/AuthPersistLocalStorage'
-import AppContainer from './components/app-container'
-import Footer from './components/footer'
+import { getJWT, getUsername } from './libs/auth-persist-local-storage'
+import { ErrorProvider } from './libs/error-store'
 
 const App = () => {
     const history = useHistory()
@@ -70,23 +71,25 @@ const App = () => {
             {
                 appReady
                     ? <AppContainer>
-                        <Switch>
-                            <Route path="/game" component={GameContainer} />
-                            <Route path="/auth" component={AuthContainer} />
-                            <Route path="/">
-                                <div>
-                                    <FaBomb size={250} />
-                                </div>
-                                <Button
-                                    label="New game"
-                                    onClick={() => {
-                                        history.push('/game/new')
-                                    }}
-                                />
-                                { token && <hr style={{width: '85%' }}  />}
-                                { token && <UserGamesContainer />}
-                            </Route>
-                        </Switch>
+                        <ErrorProvider>
+                            <Switch>
+                                <Route path="/game" component={GameContainer} />
+                                <Route path="/auth" component={AuthContainer} />
+                                <Route path="/">
+                                    <div>
+                                        <FaBomb size={250} />
+                                    </div>
+                                    <Button
+                                        label="New game"
+                                        onClick={() => {
+                                            history.push('/game/new')
+                                        }}
+                                    />
+                                    { token && <hr style={{width: '85%' }}  />}
+                                    { token && <UserGamesContainer />}
+                                </Route>
+                            </Switch>
+                        </ErrorProvider>
                     </AppContainer>
                     : null
             }

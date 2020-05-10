@@ -1,5 +1,5 @@
 import React, {createContext, useContext, useReducer} from 'react'
-import { removeUsername, setJWT, setUsername, removeJWT } from '../AuthPersistLocalStorage'
+import { removeUsername, setJWT, setUsername, removeJWT } from '../auth-persist-local-storage'
 
 interface saveUserInfoAction {
     type: 'saveUserInfo'

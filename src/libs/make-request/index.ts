@@ -59,6 +59,7 @@ const useMakeRequest = (endpoint: string, method: string, options?: MakeRequestO
 
             if (get(responseJson, 'code') === 400 ||  get(responseJson, 'code') === 401) {
                 if (onError) {
+                    setError(responseJson)
                     onError(responseJson)
                 }
             } else {
@@ -70,8 +71,19 @@ const useMakeRequest = (endpoint: string, method: string, options?: MakeRequestO
             }
         })
         .catch(error => {
+            const errorResponse = {
+                message: error.message,
+                code: 500
+            }
+
             setIsLoading(false)
-            setError(error)
+            // @ts-ignore
+            setError(errorResponse)
+
+            if (onError) {
+                // @ts-ignore
+                onError(errorResponse)
+            }
         })
     }
 

@@ -5,22 +5,25 @@ import isEmpty from 'lodash/isEmpty'
 import { useParams, useHistory } from 'react-router-dom'
 
 // LIBS
+import useMakeRequest from '../../libs/make-request'
 import { useGameContext } from '../../libs/game-store'
+import { useAuthContext } from '../../libs/auth-store'
+import { useErrorContext } from '../../libs/error-store'
+import endpoints from '../../config/endpoints'
+import { BoardValuesEnum } from '../../enums'
 
 // COMPONENTS
 import Board from '../../components/board'
-import useMakeRequest from '../../libs/make-request'
-import endpoints from '../../config/endpoints'
-import { BoardValuesEnum } from '../../enums'
 import Button from '../../components/button'
 import Spinner from '../../components/spinner'
-import {useAuthContext} from '../../libs/auth-store'
+
 
 const PlayGameContainer = () => {
     const { id } = useParams()
     const history = useHistory()
     const [ gameState, setGameState ] = useGameContext()
     const [ authState ] = useAuthContext()
+    const [ , dispatchError ] = useErrorContext()
     const baseMatrix = get(gameState, 'game.maskedBoard', [])
     const [ matrix, setMatrix ] = useState(baseMatrix)
     const [ gameOver, setGameOver ] = useState(false)
@@ -39,6 +42,7 @@ const PlayGameContainer = () => {
     useEffect(() => {
         // @ts-ignore
         if (isEmpty(gameState.game)) {
+            dispatchError({ type: 'clean-all-errors' })
             getGameById(undefined, {
                 onComplete: (res) => {
                     const gameIsOver = Boolean(res.finishedAt)
@@ -50,7 +54,8 @@ const PlayGameContainer = () => {
                     setGameOver(gameIsOver)
                     setMatrix(matrix)
                     setGameResult(message)
-                }
+                },
+                onError: handleDispatchError
             })
         }
 
@@ -60,11 +65,12 @@ const PlayGameContainer = () => {
     }, [])
 
     const handleClick = (row: number, col: number, clickType: 'left' | 'right', value?: BoardValuesEnum | null) => {
+        dispatchError({ type: 'clean-all-errors' })
         if (clickType === 'left') {
-            postMove({ gameId: id, row, col }, { onComplete: onMoveComplete })
+            postMove({ gameId: id, row, col }, { onComplete: onMoveComplete, onError: handleDispatchError })
         } else {
             if (value) {
-                postMove({ gameId: id, row, col, value}, { onComplete: onMoveComplete })
+                postMove({ gameId: id, row, col, value}, { onComplete: onMoveComplete, onError: handleDispatchError })
             }
         }
     }
@@ -79,6 +85,14 @@ const PlayGameContainer = () => {
         }
 
         setMatrix(nextBoard)
+    }
+
+    const handleDispatchError = (error: any) => {
+        dispatchError({
+            type: 'add-error',
+            message: get(error, 'message', ''),
+            code: get(error, 'code', ''),
+        })
     }
 
     const isLoading = gameIsLoading || postMoveIsLoading

@@ -1,5 +1,6 @@
 // VENDOR
 import React from 'react'
+import get from 'lodash/get'
 import { useHistory } from 'react-router'
 import { FormikValues } from 'formik'
 
@@ -12,10 +13,12 @@ import { useGameContext } from '../../libs/game-store'
 import endpoints from '../../config/endpoints'
 import Spinner from '../../components/spinner'
 import {useAuthContext} from '../../libs/auth-store'
+import {useErrorContext} from '../../libs/error-store'
 
 const NewGameContainer = () => {
     const [ authState ] = useAuthContext()
     const [, setGameState ] = useGameContext()
+    const [, dispatchError ] = useErrorContext()
     const { isLoading, makeRequest: postGame } = useMakeRequest(
         endpoints.games.post,
         'post',
@@ -26,14 +29,23 @@ const NewGameContainer = () => {
     const handleNewGameSubmit = async (values: FormikValues) => {
         const { rows, columns, mines } = values
 
+        dispatchError({ type: 'clean-all-errors'})
         postGame(
             { rows, cols: columns, mines },
-            { onComplete: ( createdGame ) => {
+            {
+                onComplete: ( createdGame ) => {
                     // @ts-ignore
                     setGameState(createdGame)
                     history.push(`/game/${createdGame._id}`)
-                }}
-            )
+                },
+                onError:  error => {
+                    dispatchError({
+                        type: 'add-error',
+                        message: get(error, 'message', ''),
+                        code: get(error, 'code', ''),
+                    })
+                }
+            })
     }
 
     return (
